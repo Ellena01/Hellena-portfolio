@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Ink: layered near-black charcoal ─────────────── */
+  --color-ink: #0b0b0e;
+  --color-ink-2: #101014;
+  --color-ink-3: #17171d;
+  --color-ink-4: #1f1f26;
+
+  /* ── Paper: warm off-whites ───────────────────────── */
+  --color-paper: #f4f1ea;
+  --color-paper-dim: #a6a3ad;
+  --color-paper-faint: #6e6b76;
+
+  /* ── Accents: used sparingly ──────────────────────── */
+  --color-gold: #c9a227;
+  --color-gold-soft: #e3c565;
+  --color-blue: #5e7ce2;
+  --color-violet: #8b7ab8;
+  --color-cyan-soft: #7fdde8;
+
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-display: var(--font-display), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(201, 162, 39, 0.28);
+  color: var(--color-paper);
+}
+
+/* ── Accessibility: visible focus ───────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  padding: 10px 18px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: top 0.2s ease;
+}
+.skip-link:focus-visible {
+  top: 12px;
+}
+
+/* ── Custom cursor takes over the native one ────────── */
+body.custom-cursor,
+body.custom-cursor * {
+  cursor: none !important;
+}
+
+/* ── 35mm grain overlay (very subtle) ───────────────── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  animation: grain-shift 0.9s steps(2) infinite;
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1%, 1%); }
+  50% { transform: translate(1%, -1%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .grain-overlay { animation: none; }
+  .orbit-rotate { animation: none !important; }
+  .marquee-track { animation: none !important; }
+}
+
+/* ── Type utilities ─────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 241, 234, 0.28);
+}
+
+.text-outline-gold {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 162, 39, 0.65);
+}
+
+/* ── Hairlines ──────────────────────────────────────── */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(244, 241, 234, 0.14) 20%,
+    rgba(244, 241, 234, 0.14) 80%,
+    transparent
+  );
+}
+
+.hairline-solid { height: 1px; background: rgba(244, 241, 234, 0.1); }
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--color-ink); }
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 162, 39, 0.5);
+  border-radius: 2px;
+}
+
+/* ── Orbit ring (hero) ──────────────────────────────── */
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.orbit-rotate {
+  animation: orbit-rotate 80s linear infinite;
+}
+
+@keyframes orbit-rotate-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+.orbit-rotate-reverse {
+  animation: orbit-rotate-reverse 60s linear infinite;
+}
+
+/* ── Marquee ────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+}
+
+/* ── Dotted leaders (credits / indices) ─────────────── */
+.leader-dots {
+  flex: 1;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(244, 241, 234, 0.22) 0,
+    rgba(244, 241, 234, 0.22) 2px,
+    transparent 2px,
+    transparent 7px
+  );
+}
+
+/* ── Underline sweep for links/buttons ──────────────── */
+.link-sweep {
+  position: relative;
+}
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
