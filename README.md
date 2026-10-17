@@ -83,18 +83,28 @@ The "human behind the screen" section ships with a deliberately labelled **place
 2. In `HumanSection.tsx`, replace the `PortraitPlate` component's output with a `next/image` block referencing the photo.
 3. Prefer a monochrome-editorial treatment (the site is built around that look).
 
+### The photographs
+
+Two editorial photographs frame the story:
+
+| Image | Used in | Notes |
+| --- | --- | --- |
+| `public/images/opening.jpg` | Hero — "Fig. 00 — the beginning" | The opening plate (right side, desktop) |
+| `public/images/closing.jpg` | End of Contact — "Fig. 06 — the end, for now" | The closing plate |
+
 ### Swapping artwork
 
 | Image | Used in | Notes |
 | --- | --- | --- |
 | `public/images/cogniflow.jpg` | CogniFlow project poster | Abstract concept artwork — replace with real screenshots when available |
+| `public/images/nigeria-celebrates.jpg` | Nigeria Celebrates project poster | Abstract warm artwork — replace with real screenshots when available |
 | `public/images/contours.jpg` | Africa section backdrop | Kept at low opacity; any dark textured image works |
 
 ---
 
 ## Design system notes
 
-- **Palette**: near-black charcoal (`ink`), warm off-white (`paper`), restrained accents — warm **gold** (primary), muted electric **blue** and **violet** (levels/legends only). Defined in `src/app/globals.css` under `@theme`.
+- **Palette**: deep-navy blues (`ink` scale) on a fixed cinematic blue gradient, warm off-white (`paper`), restrained accents — warm **gold** (primary), muted electric **blue** and **violet** (levels/legends only). Defined in `src/app/globals.css` under `@theme`.
 - **Typography**: Space Grotesk (display) + Inter (body) + JetBrains Mono (labels/microcopy), loaded via `next/font`.
 - **Motion vocabulary**: one shared set of primitives in `src/lib/motion.ts`. Heavy choreography lives in the hero and project sections; body copy is subtle.
 - **Accessibility**: semantic headings, keyboard-operable navigation, visible focus states, `aria` labelling, an accessible mobile menu and case-study dialog, a skip link, alt text, and `prefers-reduced-motion` support across animations, the canvas constellation, orbits, and the film grain.

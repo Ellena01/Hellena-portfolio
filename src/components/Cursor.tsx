@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 
 /**
  * Custom cursor — a dot with a trailing ring.
@@ -10,7 +11,10 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
  * and when the user prefers reduced motion.
  */
 export default function Cursor() {
-  const [enabled, setEnabled] = useState(false);
+  const finePointer = useMediaQuery("(pointer: fine)");
+  const reducedMotion = useReducedMotion();
+  const enabled = finePointer && !reducedMotion;
+
   const [label, setLabel] = useState<string | null>(null);
   const [hovering, setHovering] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -21,11 +25,8 @@ export default function Cursor() {
   const ry = useSpring(my, { stiffness: 350, damping: 32, mass: 0.4 });
 
   useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduced) return;
+    if (!enabled) return;
 
-    setEnabled(true);
     document.body.classList.add("custom-cursor");
 
     const onMove = (e: MouseEvent) => {
@@ -35,7 +36,7 @@ export default function Cursor() {
 
     const onOver = (e: MouseEvent) => {
       const el = (e.target as HTMLElement).closest<HTMLElement>(
-        "[data-cursor], a, button, [role='button']"
+        "[data-cursor], a, button, [role='button']",
       );
       if (el) {
         setHovering(true);
@@ -61,7 +62,7 @@ export default function Cursor() {
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
     };
-  }, [mx, my]);
+  }, [enabled, mx, my]);
 
   if (!enabled) return null;
 

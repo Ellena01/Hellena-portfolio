@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight, CornerDownLeft, X } from "lucide-react";
 import { socials } from "@/data/socials";
 import { EASE } from "@/lib/motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 /**
  * CommandPalette — press K (or click the chip) to open
@@ -32,6 +33,9 @@ export default function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const listRef = useRef<HTMLUListElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useFocusTrap(dialogRef, open);
 
   const goTo = useCallback((sel: string) => {
     setOpen(false);
@@ -151,11 +155,13 @@ export default function CommandPalette() {
             />
 
             <motion.div
+              ref={dialogRef}
+              tabIndex={-1}
               initial={{ opacity: 0, y: -14, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.28, ease: EASE }}
-              className="relative w-full max-w-xl border border-paper/15 bg-ink-2 shadow-2xl shadow-black/60"
+              className="relative w-full max-w-xl border border-paper/15 bg-ink-2 shadow-2xl shadow-black/60 focus:outline-none"
             >
               {/* Header */}
               <div className="flex items-center justify-between border-b border-paper/10 px-5 py-3.5">

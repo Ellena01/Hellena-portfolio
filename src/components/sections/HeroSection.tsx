@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   AnimatePresence,
   motion,
@@ -72,12 +73,15 @@ export default function HeroSection() {
           background:
             "radial-gradient(120% 90% at 78% 18%, rgba(94,124,226,0.09), transparent 55%)," +
             "radial-gradient(80% 60% at 12% 88%, rgba(201,162,39,0.05), transparent 60%)," +
-            "linear-gradient(to bottom, rgba(11,11,14,0) 60%, #0b0b0e 100%)",
+            "linear-gradient(to bottom, rgba(6,12,24,0) 60%, #060c18 100%)",
         }}
       />
 
       {/* Interactive thought field (right side) */}
       <ThoughtSystem reduced={!!reduced} />
+
+      {/* Opening frame — the first photograph of the story */}
+      <OpeningFrame />
 
       {/* Fine corner marks — film frame feeling */}
       <CornerMarks />
@@ -247,6 +251,43 @@ export default function HeroSection() {
         </div>
       </motion.div>
     </section>
+  );
+}
+
+/* ─── Opening photograph (editorial plate) ────────────── */
+function OpeningFrame() {
+  return (
+    <figure
+      aria-label="Opening photograph of Helen"
+      className="pointer-events-none absolute right-4 top-1/2 z-10 hidden w-[min(22vw,280px)] -translate-y-1/2 lg:block xl:right-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.3, duration: 1, ease: EASE }}
+        className="border border-paper/15 bg-ink-2/80 p-2.5 shadow-2xl shadow-black/50 backdrop-blur-sm"
+      >
+        <div className="relative aspect-[4/5] overflow-hidden">
+          <Image
+            src="/images/opening.jpg"
+            alt="Helen Oyiza Ozipius — opening portrait"
+            fill
+            sizes="(min-width: 1024px) 22vw"
+            className="object-cover"
+            priority
+          />
+        </div>
+      </motion.div>
+      <motion.figcaption
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="mt-3 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.3em] text-paper-faint"
+      >
+        <span className="leader-dots" aria-hidden="true" />
+        Fig. 00 — the beginning
+      </motion.figcaption>
+    </figure>
   );
 }
 
