@@ -74,7 +74,7 @@ export default function ChapterRail() {
                 document.getElementById(ch.id)?.scrollIntoView({ behavior: "smooth" })
               }
               aria-label={`Go to ${ch.label}`}
-              aria-current={isActive ? "true" : undefined}
+              aria-current={isActive ? "location" : undefined}
               data-cursor={ch.label}
               className="group flex items-center gap-3"
             >

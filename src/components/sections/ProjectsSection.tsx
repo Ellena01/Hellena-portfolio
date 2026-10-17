@@ -24,6 +24,7 @@ import Magnetic from "@/components/MagneticButton";
 import { GithubIcon } from "@/components/icons";
 import { projects, type Project } from "@/data/projects";
 import { EASE } from "@/lib/motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const FEATURE_ICONS = [BrainCircuit, BookOpenText, GraduationCap, Mic2, Layers, Sparkles, Atom];
 
@@ -272,7 +273,10 @@ function ProjectPoster({
 function CaseStudy({ project, onClose }: { project: Project; onClose: () => void }) {
   const reduced = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [openFeature, setOpenFeature] = useState<number>(0);
+
+  useFocusTrap(dialogRef, true);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -289,6 +293,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
 
   return (
     <motion.div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={`${project.title} case study`}

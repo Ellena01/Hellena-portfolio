@@ -2,15 +2,15 @@
 
 @theme {
   /* ── Ink: layered near-black charcoal ─────────────── */
-  --color-ink: #0b0b0e;
-  --color-ink-2: #101014;
-  --color-ink-3: #17171d;
-  --color-ink-4: #1f1f26;
+  --color-ink: #060c18;
+  --color-ink-2: #0a1424;
+  --color-ink-3: #0f1d33;
+  --color-ink-4: #152642;
 
   /* ── Paper: warm off-whites ───────────────────────── */
   --color-paper: #f4f1ea;
   --color-paper-dim: #a6a3ad;
-  --color-paper-faint: #6e6b76;
+  --color-paper-faint: #9b98a5;
 
   /* ── Accents: used sparingly ──────────────────────── */
   --color-gold: #c9a227;
@@ -32,7 +32,12 @@ html {
 }
 
 body {
-  background: var(--color-ink);
+  /* Cinematic deep-blue gradient atmosphere */
+  background:
+    radial-gradient(120% 80% at 85% -10%, rgba(59, 99, 214, 0.16), transparent 55%),
+    radial-gradient(90% 70% at 5% 100%, rgba(94, 124, 226, 0.1), transparent 60%),
+    linear-gradient(180deg, #081226 0%, var(--color-ink) 45%, #081020 100%);
+  background-attachment: fixed;
   color: var(--color-paper);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

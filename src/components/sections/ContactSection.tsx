@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUp, ArrowUpRight, Check, Copy, Mail, Terminal } from "lucide-react";
 import SectionShell from "@/components/SectionShell";
@@ -202,6 +203,42 @@ export default function ContactSection() {
           </div>
         </div>
       </footer>
+
+      {/* Closing frame — the last photograph of the story */}
+      <ClosingFrame />
     </>
+  );
+}
+
+/* ─── Closing photograph (editorial plate) ────────── */
+function ClosingFrame() {
+  const reduced = useReducedMotion();
+
+  return (
+    <motion.figure
+      aria-label="Closing photograph"
+      initial={reduced ? undefined : { opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.9, ease: EASE }}
+      className="relative mx-auto w-full max-w-6xl px-6 pb-20 md:px-10"
+    >
+      <div className="border border-paper/15 bg-ink-2/60 p-3">
+        <div className="relative aspect-[3/4] w-full overflow-hidden md:mx-auto md:max-w-xl">
+          <Image
+            src="/images/closing.jpg"
+            alt="Closing photograph — Helen Oyiza Ozipius"
+            fill
+            sizes="(min-width: 768px) 36vw, 100vw"
+            className="object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <figcaption className="mt-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.3em] text-paper-faint">
+        <span className="leader-dots" aria-hidden="true" />
+        Fig. 06 — the end, for now
+      </figcaption>
+    </motion.figure>
   );
 }

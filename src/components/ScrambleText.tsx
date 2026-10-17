@@ -26,11 +26,10 @@ export default function ScrambleText({
   const reduced = useReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
-  const [display, setDisplay] = useState(text);
+  const [scrambled, setScrambled] = useState(text);
 
   useEffect(() => {
     if (reduced || !inView) {
-      if (reduced) setDisplay(text);
       return;
     }
 
@@ -54,15 +53,18 @@ export default function ScrambleText({
         })
         .join("");
 
-      setDisplay(out);
+      setScrambled(out);
       if (frame >= total) {
-        setDisplay(text);
+        setScrambled(text);
         window.clearInterval(id);
       }
     }, 28);
 
     return () => window.clearInterval(id);
   }, [inView, text, delay, charStep, reduced]);
+
+  /* Reduced motion or not yet in view: show the final text directly. */
+  const display = reduced || !inView ? text : scrambled;
 
   return (
     <span ref={ref} className={className} aria-label={text}>

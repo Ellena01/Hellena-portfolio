@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { profile } from "@/data/profile";
 import { EASE } from "@/lib/motion";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const NAV_ITEMS = [
   { label: "Hello", href: "#hello" },
@@ -19,6 +20,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useFocusTrap(overlayRef, open);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -33,13 +37,6 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [open]);
-
-  const go = (href: string) => {
-    setOpen(false);
-    document.querySelector(href)?.scrollIntoView({
-      behavior: reduced ? "auto" : "smooth",
-    });
-  };
 
   return (
     <>
@@ -57,27 +54,23 @@ export default function Navbar() {
           className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 md:px-10"
           aria-label="Primary"
         >
-          <button
-            onClick={() => go("#hello")}
-            className="flex items-baseline gap-1.5 group"
-            aria-label="Back to top"
-          >
+          <a href="#hello" className="flex items-baseline gap-1.5 group">
             <span className="font-display text-lg font-bold tracking-tight">
               {profile.shortName}
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-gold group-hover:scale-125 transition-transform" />
-          </button>
+          </a>
 
           {/* Desktop */}
           <ul className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
-                <button
-                  onClick={() => go(item.href)}
+                <a
+                  href={item.href}
                   className="link-sweep font-mono text-[11px] uppercase tracking-[0.25em] text-paper-dim hover:text-paper transition-colors"
                 >
                   {item.label}
-                </button>
+                </a>
               </li>
             ))}
           </ul>
@@ -98,6 +91,7 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={overlayRef}
             className="fixed inset-0 z-[100] bg-ink flex flex-col"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -131,8 +125,9 @@ export default function Navbar() {
                     exit={{ opacity: 0 }}
                     transition={{ delay: 0.08 + i * 0.06, duration: 0.5, ease: EASE }}
                   >
-                    <button
-                      onClick={() => go(item.href)}
+                    <a
+                      href={item.href}
+                      onClick={() => setOpen(false)}
                       className="group flex w-full items-baseline gap-4 py-3 text-left"
                     >
                       <span className="font-mono text-[10px] text-gold">
@@ -141,7 +136,7 @@ export default function Navbar() {
                       <span className="font-display text-4xl font-bold tracking-tight text-paper group-hover:text-gold transition-colors">
                         {item.label}
                       </span>
-                    </button>
+                    </a>
                   </motion.li>
                 ))}
               </ul>
